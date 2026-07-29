@@ -1,0 +1,20 @@
+# RStudio
+.Rproj.user/
+.Rhistory
+.RData
+.Ruserdata
+
+# Environment
+.Renviron
+.env
+
+# macOS
+.DS_Store
+
+# Raw data
+data/raw/*
+!data/raw/README.md
+
+# Outputs
+outputs/*.rds
+outputs/*.RData
