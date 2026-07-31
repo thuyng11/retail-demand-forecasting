@@ -1,0 +1,91 @@
+:root {
+  --dashboard-bg: #f4f6f8;
+  --dashboard-card: #ffffff;
+  --dashboard-border: #e2e8f0;
+  --dashboard-text: #182230;
+  --dashboard-muted: #64748b;
+  --dashboard-accent: #2563eb;
+}
+
+body {
+  background: var(--dashboard-bg);
+}
+
+.navbar {
+  border-bottom: 1px solid var(--dashboard-border);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+.brand-title {
+  display: flex;
+  gap: 0.35rem;
+  align-items: center;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.brand-accent {
+  color: var(--dashboard-accent);
+}
+
+.bslib-card {
+  border: 1px solid var(--dashboard-border);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+}
+
+.card-header {
+  font-weight: 600;
+  background: transparent;
+  border-bottom: 1px solid var(--dashboard-border);
+}
+
+.value-box {
+  border: 1px solid var(--dashboard-border);
+  box-shadow: none;
+}
+
+.dashboard-section-title {
+  margin-top: 0.5rem;
+  margin-bottom: 0.25rem;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+
+.dashboard-section-subtitle {
+  color: var(--dashboard-muted);
+  margin-bottom: 1rem;
+}
+
+.insight-box {
+  padding: 1rem 1.1rem;
+  border-left: 4px solid var(--dashboard-accent);
+  background: rgba(37, 99, 235, 0.06);
+  border-radius: 0.5rem;
+}
+
+.placeholder-panel {
+  min-height: 260px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--dashboard-muted);
+  text-align: center;
+  padding: 2rem;
+}
+
+.app-footer {
+  width: 100%;
+  padding: 1.25rem;
+  text-align: center;
+  color: var(--dashboard-muted);
+  font-size: 0.875rem;
+}
+
+[data-bs-theme="dark"] {
+  --dashboard-bg: #0f172a;
+  --dashboard-card: #111827;
+  --dashboard-border: #293548;
+  --dashboard-text: #e5e7eb;
+  --dashboard-muted: #94a3b8;
+}
