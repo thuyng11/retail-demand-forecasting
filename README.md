@@ -1,0 +1,1 @@
+Research question: Can we accurately forecast short-term product demand and identify products that may require inventory attention?
