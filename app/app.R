@@ -47,6 +47,38 @@ product_sales <- arrow::read_parquet(
 ) %>%
   mutate(date = as.Date(date))
 
+# =========================================================
+# Feature-engineering outputs
+# =========================================================
+
+category_features <- arrow::read_parquet(
+  here::here(
+    "outputs",
+    "category_features_ca1.parquet"
+  )
+) %>%
+  as_tibble() %>%
+  mutate(
+    date = as.Date(date),
+    cat_id = as.character(cat_id)
+  )
+
+feature_summary <- readr::read_csv(
+  here::here(
+    "outputs",
+    "feature_summary.csv"
+  ),
+  show_col_types = FALSE
+)
+
+feature_dictionary <- readr::read_csv(
+  here::here(
+    "outputs",
+    "feature_dictionary.csv"
+  ),
+  show_col_types = FALSE
+)
+
 app_theme <- bs_theme(
   version = 5,
   bg = "#F4F6F8",
@@ -170,7 +202,10 @@ server <- function(input, output, session) {
   )
   
   features_server(
-    "features"
+    "features",
+    category_features = category_features,
+    feature_summary = feature_summary,
+    feature_dictionary = feature_dictionary
   )
   
   forecasting_server(
