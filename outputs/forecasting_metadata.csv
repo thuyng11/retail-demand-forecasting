@@ -1,0 +1,2 @@
+project_store,forecast_horizon_days,training_start_date,training_end_date,testing_start_date,testing_end_date,categories,models_evaluated,evaluation_type,ranking_metric,created_at
+CA_1,28,2011-02-26,2016-04-24,2016-04-25,2016-05-22,3,3,Fixed 28-day chronological holdout,WAPE,2026-08-03T17:23:21Z

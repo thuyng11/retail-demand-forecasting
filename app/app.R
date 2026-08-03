@@ -79,6 +79,76 @@ feature_dictionary <- readr::read_csv(
   show_col_types = FALSE
 )
 
+# =========================================================
+# Forecasting outputs
+# =========================================================
+
+category_forecasts <- readr::read_csv(
+  here::here(
+    "outputs",
+    "category_forecasts.csv"
+  ),
+  show_col_types = FALSE
+) %>%
+  mutate(
+    date = as.Date(date),
+    cat_id = as.character(cat_id),
+    model = as.character(model)
+  )
+
+category_model_metrics <- readr::read_csv(
+  here::here(
+    "outputs",
+    "category_model_metrics.csv"
+  ),
+  show_col_types = FALSE
+) %>%
+  mutate(
+    cat_id = as.character(cat_id),
+    model = as.character(model)
+  )
+
+category_model_rankings <- readr::read_csv(
+  here::here(
+    "outputs",
+    "category_model_rankings.csv"
+  ),
+  show_col_types = FALSE
+) %>%
+  mutate(
+    cat_id = as.character(cat_id),
+    model = as.character(model)
+  )
+
+category_residuals <- readr::read_csv(
+  here::here(
+    "outputs",
+    "category_residuals.csv"
+  ),
+  show_col_types = FALSE
+) %>%
+  mutate(
+    date = as.Date(date),
+    cat_id = as.character(cat_id),
+    model = as.character(model)
+  )
+
+xgboost_feature_importance <- readr::read_csv(
+  here::here(
+    "outputs",
+    "xgboost_feature_importance.csv"
+  ),
+  show_col_types = FALSE
+)
+
+forecasting_metadata <- readr::read_csv(
+  here::here(
+    "outputs",
+    "forecasting_metadata.csv"
+  ),
+  show_col_types = FALSE
+)
+
 app_theme <- bs_theme(
   version = 5,
   bg = "#F4F6F8",
@@ -209,7 +279,13 @@ server <- function(input, output, session) {
   )
   
   forecasting_server(
-    "forecasting"
+    "forecasting",
+    category_forecasts = category_forecasts,
+    category_model_metrics = category_model_metrics,
+    category_model_rankings = category_model_rankings,
+    category_residuals = category_residuals,
+    xgboost_feature_importance = xgboost_feature_importance,
+    forecasting_metadata = forecasting_metadata
   )
   
   inventory_server(

@@ -757,3 +757,241 @@ category_model_metrics <- all_forecasts %>%
     cat_id,
     wape
   )
+
+overall_model_metrics <- all_forecasts %>%
+  group_by(model) %>%
+  group_modify(
+    ~ calculate_forecast_metrics(.x)
+  ) %>%
+  ungroup() %>%
+  mutate(
+    cat_id = "ALL"
+  ) %>%
+  relocate(
+    cat_id,
+    .before = model
+  ) %>%
+  mutate(
+    across(
+      c(
+        mae,
+        rmse,
+        wape,
+        forecast_bias,
+        mean_actual,
+        mean_predicted
+      ),
+      ~ round(.x, 3)
+    )
+  )
+
+all_model_metrics <- bind_rows(
+  category_model_metrics,
+  overall_model_metrics
+)
+
+readr::write_csv(
+  all_model_metrics,
+  here::here(
+    "outputs",
+    "category_model_metrics.csv"
+  )
+)
+
+category_model_rankings <- category_model_metrics %>%
+  group_by(cat_id) %>%
+  arrange(
+    wape,
+    rmse,
+    mae,
+    .by_group = TRUE
+  ) %>%
+  mutate(
+    model_rank = row_number(),
+    is_best_model = model_rank == 1L
+  ) %>%
+  ungroup()
+
+# BEST MODEL
+
+category_model_rankings %>%
+  filter(is_best_model) %>%
+  select(
+    cat_id,
+    model,
+    mae,
+    rmse,
+    wape,
+    forecast_bias
+  ) %>%
+  print()
+
+readr::write_csv(
+  category_model_rankings,
+  here::here(
+    "outputs",
+    "category_model_rankings.csv"
+  )
+)
+
+# Add ranking information to each forecast row
+all_forecasts <- all_forecasts %>%
+  select(
+    -any_of(c("model_rank", "is_best_model"))
+  ) %>%
+  left_join(
+    category_model_rankings %>%
+      select(
+        cat_id,
+        model,
+        model_rank,
+        is_best_model
+      ),
+    by = c(
+      "cat_id",
+      "model"
+    )
+  )
+
+# Create residual dataset
+category_residuals <- all_forecasts %>%
+  select(
+    date,
+    cat_id,
+    model,
+    actual,
+    predicted,
+    residual,
+    absolute_error,
+    squared_error,
+    absolute_percentage_error,
+    model_rank,
+    is_best_model
+  )
+
+xgb_engine <- workflows::extract_fit_engine(
+  xgb_fit
+)
+
+xgboost_feature_importance <- xgboost::xgb.importance(
+  model = xgb_engine
+) %>%
+  as_tibble() %>%
+  transmute(
+    feature = Feature,
+    gain = Gain,
+    cover = Cover,
+    frequency = Frequency
+  ) %>%
+  arrange(
+    desc(gain)
+  )
+
+forecasting_metadata <- tibble(
+  project_store = "CA_1",
+  forecast_horizon_days = forecast_horizon,
+  training_start_date = min(training_data$date),
+  training_end_date = max(training_data$date),
+  testing_start_date = min(testing_data$date),
+  testing_end_date = max(testing_data$date),
+  categories = n_distinct(category_features$cat_id),
+  models_evaluated = n_distinct(all_forecasts$model),
+  evaluation_type = "Fixed 28-day chronological holdout",
+  ranking_metric = "WAPE",
+  created_at = Sys.time()
+)
+
+readr::write_csv(
+  all_forecasts,
+  here::here(
+    "outputs",
+    "category_forecasts.csv"
+  )
+)
+
+readr::write_csv(
+  category_residuals,
+  here::here(
+    "outputs",
+    "category_residuals.csv"
+  )
+)
+
+readr::write_csv(
+  xgboost_feature_importance,
+  here::here(
+    "outputs",
+    "xgboost_feature_importance.csv"
+  )
+)
+
+readr::write_csv(
+  forecasting_metadata,
+  here::here(
+    "outputs",
+    "forecasting_metadata.csv"
+  )
+)
+
+#----------------PLOTS---------------------#
+
+# Actual vs predicted
+all_forecasts %>%
+  ggplot(
+    aes(
+      x = date,
+      y = actual
+    )
+  ) +
+  geom_line(
+    linewidth = 1,
+    color = "black"
+  ) +
+  geom_line(
+    aes(
+      y = predicted,
+      color = model
+    ),
+    linewidth = 0.8
+  ) +
+  facet_wrap(
+    ~ cat_id,
+    scales = "free_y"
+  ) +
+  labs(
+    title = "Actual vs Predicted Demand",
+    subtitle = "28-day holdout period",
+    x = NULL,
+    y = "Units sold",
+    color = "Model"
+  ) +
+  theme_minimal()
+
+
+# Residual comparison
+all_forecasts %>%
+  ggplot(
+    aes(
+      x = model,
+      y = residual,
+      fill = model
+    )
+  ) +
+  geom_boxplot() +
+  facet_wrap(
+    ~ cat_id,
+    scales = "free_y"
+  ) +
+  geom_hline(
+    yintercept = 0,
+    linetype = "dashed"
+  ) +
+  labs(
+    title = "Forecast Residual Distribution",
+    x = NULL,
+    y = "Actual - Predicted"
+  ) +
+  theme_minimal() +
+  theme(
+    legend.position = "none"
+  )
