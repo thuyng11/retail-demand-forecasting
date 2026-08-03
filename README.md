@@ -193,3 +193,4 @@ shiny::runApp("app")
 | `outputs/category_residuals.csv` | Residual-level diagnostics |
 | `outputs/xgboost_feature_importance.csv` | XGBoost gain/cover/frequency per feature |
 | `figures/` | EDA plots (PNG) |
+| `tableau dashboard` | https://public.tableau.com/views/Retail-Dashboard_17857851346960/Dashboard1?:language=en-US&publish=yes&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link|
