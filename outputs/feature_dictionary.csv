@@ -1,0 +1,31 @@
+feature,group,description
+lag_1,Historical demand,Demand observed one day earlier
+lag_7,Historical demand,Demand observed seven days earlier
+lag_14,Historical demand,Demand observed fourteen days earlier
+lag_28,Historical demand,Demand observed twenty-eight days earlier
+rolling_mean_7,Rolling demand,Mean demand during the previous seven days
+rolling_mean_14,Rolling demand,Mean demand during the previous fourteen days
+rolling_mean_28,Rolling demand,Mean demand during the previous twenty-eight days
+rolling_sd_7,Rolling demand,Demand variability during the previous seven days
+rolling_sd_28,Rolling demand,Demand variability during the previous twenty-eight days
+zero_sales_rate_28,Demand intermittency,Share of the previous twenty-eight days with zero sales
+calendar_month,Calendar,Numeric calendar month
+calendar_week,Calendar,ISO calendar week
+calendar_quarter,Calendar,Calendar quarter
+weekday_number,Calendar,"Day of the week, with Monday equal to one"
+month_sin,Calendar,Cyclical sine encoding of month
+month_cos,Calendar,Cyclical cosine encoding of month
+weekday_sin,Calendar,Cyclical sine encoding of weekday
+weekday_cos,Calendar,Cyclical cosine encoding of weekday
+is_month_start,Calendar,Indicates the first day of a month
+is_month_end,Calendar,Indicates the final day of a month
+is_event,Events,Indicates a recorded holiday or special event
+days_since_event,Events,Number of days since the most recent event
+days_until_event,Events,Number of days until the next event
+within_3_days_of_event,Events,Indicates dates within three days of an event
+snap_ca,External factor,Indicates a California SNAP purchasing day
+price_change_1,Pricing,Difference from the previous observed price
+price_pct_change_1,Pricing,Percentage change from the previous observed price
+is_price_decrease,Pricing,Indicates that price decreased from the previous day
+rolling_price_mean_28,Pricing,Mean historical price during the previous twenty-eight days
+price_relative_to_28_day_mean,Pricing,Current price divided by its prior twenty-eight-day mean
