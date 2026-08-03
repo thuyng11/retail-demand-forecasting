@@ -1,6 +1,6 @@
 # Retail Demand Intelligence
 
-An end-to-end retail demand forecasting project built in R, using the [M5 Forecasting – Accuracy](https://www.kaggle.com/competitions/m5-forecasting-accuracy) dataset. The project covers data cleaning, exploratory analysis, feature engineering, multi-model forecasting, and an interactive Shiny dashboard.
+An end-to-end retail demand forecasting project built in R, using the [M5 Forecasting – Accuracy](https://www.kaggle.com/competitions/m5-forecasting-accuracy) dataset. The project covers data cleaning, exploratory analysis, feature engineering, multi-model forecasting, an interactive Shiny dashboard, and a public Tableau dashboard.
 
 **Research question:** Can we accurately forecast short-term product demand and identify products that may require inventory attention?
 
@@ -15,6 +15,7 @@ An end-to-end retail demand forecasting project built in R, using the [M5 Foreca
 - [Forecasting Models](#forecasting-models)
 - [Shiny Dashboard](#shiny-dashboard)
 - [Getting Started](#getting-started)
+- [Tableau Dashboard](#shiny-dashboard)
 - [Key Outputs](#key-outputs)
 
 ---
@@ -180,6 +181,13 @@ shiny::runApp("app")
 
 ---
 
+## Tableau Dashboard
+
+Link to dashboard: https://public.tableau.com/views/Retail-Dashboard_17857851346960/Dashboard1?:language=en-US&publish=yes&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link
+
+The Tableau dashboard provides an interactive overview of retail sales performance across product categories and time. Users can explore trends in daily sales, compare category performance, identify high- and low-performing products, and examine key business metrics through dynamic filters and visualizations. The dashboard is designed to support data-driven decision making by making complex sales data easy to explore and interpret.
+
+---
 ## Key Outputs
 
 | Path | Description |
@@ -193,4 +201,3 @@ shiny::runApp("app")
 | `outputs/category_residuals.csv` | Residual-level diagnostics |
 | `outputs/xgboost_feature_importance.csv` | XGBoost gain/cover/frequency per feature |
 | `figures/` | EDA plots (PNG) |
-| `tableau dashboard` | https://public.tableau.com/views/Retail-Dashboard_17857851346960/Dashboard1?:language=en-US&publish=yes&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link|
